@@ -1,4 +1,4 @@
-# loading libs and key------------------------------------------------------------
+# loading libs------------------------------------------------------------
 library(tidyverse)
 library(Rspotify)
 library(lubridate)

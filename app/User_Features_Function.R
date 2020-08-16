@@ -3,6 +3,7 @@ library(tidyverse)
 library(Rspotify)
 library(tictoc)
 library(tools)
+load("keys")
 
 Features_Function <- function(track_data, features=
                                 c("Song Features", "Release Dates", "Genre Information", "Explicit Status of Songs")){

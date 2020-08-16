@@ -2,7 +2,7 @@ library(stringr)
 library(tidyverse)
 library(Rspotify)
 library(tictoc)
-
+load("keys")
 
 Tracks_Function <- function(user,playlists){
   # Cleaning the input ------------------------------------------------------

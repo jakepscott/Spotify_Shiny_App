@@ -15,8 +15,6 @@ library(tidyverse)
 
 
 # Loading Necessary Data and Functions ------------------------------------
-
-
 source("User_Tracks_Function.R")
 source("User_Features_Function.R")
 source("User_Lyric_Analysis_Function.R")
@@ -24,8 +22,7 @@ source("User_Lyric_Generation_Function.R")
 source("Overview_Figure_Function.R")
 source("Playlist_Comparison_Function.R")
 
-source("Spotify_Key.R")
-
+load("keys")
 
 #Mandatory Fields
 fieldsMandatory <- c("username", "playlists","features")
@@ -33,7 +30,7 @@ fieldsMandatory <- c("username", "playlists","features")
 #Reactive values storage
 RV <- reactiveValues()
 
-
+keys <- keys
 
 # UI ----------------------------------------------------------------------
 
