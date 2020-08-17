@@ -10,6 +10,9 @@ library(remotes)
 library(genius)
 library(stringi)
 library(tools)
+library(textdata)
+nrc_data <- read_rds("Data/nrc_data.rds")
+afinn_data <- read_rds("Data/afinn_data.rds")
 Lyric_Analysis_Function <- function(Lyrics){
   
   #only works if there is at least 1 song in the track_data object
@@ -18,7 +21,7 @@ Lyric_Analysis_Function <- function(Lyrics){
   }
   
   #Using the EmoLex to get word sentiments
-  word_sentiment <- get_sentiments("nrc")
+  word_sentiment <- nrc_data
   
   ##Getting it into useable form, so you can see which emotions a given word does or does not match with
   word_sentiment <- word_sentiment %>% mutate(na=NA) %>% pivot_wider(names_from = sentiment, values_from = sentiment) %>%
@@ -85,7 +88,7 @@ Lyric_Analysis_Function <- function(Lyrics){
   
   
   # Overall Song Sentiment --------------------------------------------------
-  afinn <- get_sentiments("afinn")
+  afinn <- afinn_data
   
   song_sentiment_2 <- "placeholder" %>% 
     tibble(word=.) %>%
