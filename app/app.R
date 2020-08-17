@@ -12,6 +12,7 @@ library(shinycssloaders)
 library(stringr)
 library(Rspotify)
 library(tidyverse)
+library(shinybusy)
 
 
 # Loading Necessary Data and Functions ------------------------------------
@@ -196,6 +197,7 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$analyze,{
+    show_modal_progress_line(color = "#1DB954",text = "Getting Playlists...")
     #Getting the order of the playlists
     #This makes it so that we just have the username of the user
     if (str_detect(input$username,"spotify")==T) {
@@ -203,13 +205,13 @@ server <- function(input, output, session) {
     } else {
       user <- input$username
     }
-    
+    update_modal_progress(0.1)
     playlist_order <- getPlaylists(user,token = keys) %>% 
       as_tibble() %>% 
       mutate(Order=1:nrow(.)) %>% 
       rename("Playlist"=name) %>% 
       select(Playlist,Order)
-    
+    update_modal_progress(0.2, text = "Getting Track-Related Information")
     #Getting tracks from their playlist
     tracks <- Tracks_Function(user = input$username,playlists=input$playlists)    #You need to get rid of the playlist column so that it doesn't try to join by that, and you need to do distinct because if a song
     #appears in 2+ playlists it will get added twice to each corresponding column in the lefthand side
@@ -219,12 +221,14 @@ server <- function(input, output, session) {
       Features <- Features_Function(track_data = tracks,features = input$features)
       
     }
+    update_modal_progress(0.5, text = "Getting Lyric Information")
     if ("Lyrics" %in% input$features) {
       #Getting lyrics
       Lyrics <- Lyric_Generation_Function(tracks)
       #Getting features of the lyrics
       Lyric_Features <- Lyric_Analysis_Function(Lyrics) %>% select(-Lyrics)
     }
+    update_modal_progress(0.8, text = "Joining Data")
     #Joining it all together. HAS TO BE A MORE EFFICIENT WAY TO DO THIS
     placeholder <- ifelse(("Song Features" %in% input$features | "Release Dates"  %in% input$features | 
                              "Genre Information"  %in% input$features |
@@ -248,12 +252,13 @@ server <- function(input, output, session) {
     
     #Data table is just Song and Playlist until user adds other features
     obj$datatable_data <- obj$playlist_comparison %>% select(Playlist,colnames(obj$playlist_comparison[2]))
-    
+    update_modal_progress(1, text = "Done!")
     #Now that data is loaded, enable the exploration UI
     shinyjs::enable("Overview_Table_Variables")
     shinyjs::enable("Overview_Table_Button_Click")
     shinyjs::enable("Overview_Graph_Variables")
     shinyjs::enable("Playlist_Comparison_Order")
+    remove_modal_progress()
   })
   
   
