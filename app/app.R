@@ -102,7 +102,7 @@ ui <- dashboardPage(skin = "green",
                                                            choices = c("By Value","By Date of Creation"),
                                                            selected = "By Value",
                                                            inline = T,
-                                                           status = "success",
+                                                           status = "success"
                                               )
                                           )),
                                    #Figure
