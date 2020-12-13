@@ -139,5 +139,5 @@ Playlist_Comparison_Function <- function(data) {
     Playlist_Data <- left_join(Playlist_Data,Words)
   }
   
-  Playlist_Data %>% mutate(across(where(is.numeric),round,1))
+  Playlist_Data %>% mutate(across(where(is.numeric),round,4))
 }
